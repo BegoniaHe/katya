@@ -1,0 +1,58 @@
+export component LinedGridBackground inherits Rectangle {
+	in property <float> zoom: 1.0;
+	in property <length> pan-x: 0px;
+	in property <length> pan-y: 0px;
+	in property <length> minor-step: 52px;
+	in property <int> major-every: 5;
+	in property <length> minor-line-width: 1px;
+	in property <float> major-line-scale: 1.3;
+	in property <brush> minor-color: #1d2a3d;
+	in property <brush> major-color: #2d3f5a;
+
+	private property <length> minor-step-screen: root.minor-step * root.zoom;
+	private property <length> major-step-screen: root.minor-step-screen * root.major-every;
+	private property <length> minor-origin-x: root.pan-x - floor(root.pan-x / root.minor-step-screen) * root.minor-step-screen;
+	private property <length> minor-origin-y: root.pan-y - floor(root.pan-y / root.minor-step-screen) * root.minor-step-screen;
+	private property <length> major-origin-x: root.pan-x - floor(root.pan-x / root.major-step-screen) * root.major-step-screen;
+	private property <length> major-origin-y: root.pan-y - floor(root.pan-y / root.major-step-screen) * root.major-step-screen;
+	private property <int> minor-row-count: ceil(root.height / root.minor-step-screen) + 4;
+	private property <int> minor-col-count: ceil(root.width / root.minor-step-screen) + 4;
+	private property <int> major-row-count: ceil(root.height / root.major-step-screen) + 4;
+	private property <int> major-col-count: ceil(root.width / root.major-step-screen) + 4;
+	private property <length> major-line-width: root.minor-line-width * root.major-line-scale;
+
+	clip: true;
+	background: transparent;
+
+	for _[col] in root.minor-col-count : Rectangle {
+		x: root.minor-origin-x + col * root.minor-step-screen;
+		y: 0px;
+		width: root.minor-line-width;
+		height: parent.height;
+		background: root.minor-color;
+	}
+
+	for _[row] in root.minor-row-count : Rectangle {
+		x: 0px;
+		y: root.minor-origin-y + row * root.minor-step-screen;
+		width: parent.width;
+		height: root.minor-line-width;
+		background: root.minor-color;
+	}
+
+	for _[col] in root.major-col-count : Rectangle {
+		x: root.major-origin-x + col * root.major-step-screen;
+		y: 0px;
+		width: root.major-line-width;
+		height: parent.height;
+		background: root.major-color;
+	}
+
+	for _[row] in root.major-row-count : Rectangle {
+		x: 0px;
+		y: root.major-origin-y + row * root.major-step-screen;
+		width: parent.width;
+		height: root.major-line-width;
+		background: root.major-color;
+	}
+}

@@ -1,18 +1,12 @@
-import { Button, VerticalBox } from "std-widgets.slint";
+import { WorkflowCanvas } from "components/workflow/canvas/canvas.slint";
+import { GridBackgroundStyle } from "components/workflow/canvas/canvas.slint";
 
 export component AppWindow inherits Window {
-    in-out property <int> counter: 42;
-    callback request-increase-value();
-    VerticalBox {
-        Text {
-            text: "Counter: \{root.counter}";
-        }
-
-        Button {
-            text: "Increase value";
-            clicked => {
-                root.request-increase-value();
-            }
-        }
+    title: "Katya";
+    preferred-width: 720px;
+    preferred-height: 480px;
+    WorkflowCanvas {
+        width: parent.width;
+        height: parent.height;
     }
 }
