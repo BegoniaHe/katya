@@ -1,0 +1,57 @@
+ci:
+  autofix_prs: true
+  autofix_commit_msg: "[pre-commit.ci] auto fixes from pre-commit hooks [skip ci]"
+  skip: [fmt, cargo-check, clippy, cargo-test]
+
+exclude: ^reference/
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+      - id: check-case-conflict
+      - id: fix-byte-order-marker
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-ast
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.2.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert]
+
+  - repo: local
+    hooks:
+      - id: fmt
+        name: rustfmt
+        language: system
+        entry: cargo fmt --all
+        pass_filenames: false
+        files: ^(?!reference/)(src/.*\.rs|build\.rs|Cargo\.toml)$
+
+      - id: cargo-check
+        name: cargo check
+        language: system
+        entry: cargo check
+        pass_filenames: false
+        files: ^(?!reference/)(src/.*\.rs|build\.rs|Cargo\.toml|ui/.*\.slint)$
+
+      - id: clippy
+        name: clippy
+        language: system
+        entry: cargo clippy --all-targets --all-features -- -D warnings
+        pass_filenames: false
+        files: ^(?!reference/)(src/.*\.rs|build\.rs|Cargo\.toml|ui/.*\.slint)$
+
+      - id: cargo-test
+        name: cargo test
+        language: system
+        entry: cargo test
+        pass_filenames: false
+        files: ^(?!reference/)(src/.*\.rs|build\.rs|Cargo\.toml|ui/.*\.slint)$
