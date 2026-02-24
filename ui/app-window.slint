@@ -1,12 +1,6 @@
-import { WorkflowCanvas } from "components/workflow/canvas/canvas.slint";
-import { GridBackgroundStyle } from "components/workflow/canvas/canvas.slint";
 
 export component AppWindow inherits Window {
     title: "Katya";
     preferred-width: 720px;
     preferred-height: 480px;
-    WorkflowCanvas {
-        width: parent.width;
-        height: parent.height;
-    }
 }
